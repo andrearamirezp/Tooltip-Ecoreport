@@ -1,0 +1,1229 @@
+var mainChart, ctx, ctxEvaluations, ctxAccomplishment, ctxPartialAccomplishment, evaluationsChart, accomplishmentChart, partialAccomplishmentChart, options,  opChart, secChart, config, configPieSec, configPieOp, gauge1, gauge2, gauge3, baseUrl = 'http://pro.ecoreport.cl/backend/reports/?', actualStart = '', actualEnd = '', baseUrlA = 'http://pro.ecoreport.cl/backend/activities/list/?',filteredData = false;
+    var availableScopes = [];
+
+    var scopeNames = ['Operativo','Seguridad','Mantenimiento','Ventas','Proyectos','Administración'];
+    var scopeSlugs = ['operative','security','maintenance','sales','projects','management'];
+
+    var defaultScope = null;
+
+
+
+      var colorsArray = ["#63b598", "#ce7d78", "#ea9e70", "#a48a9e", "#c6e1e8", "#648177" ,"#0d5ac1" ,
+"#f205e6" ,"#1c0365" ,"#14a9ad" ,"#4ca2f9" ,"#a4e43f" ,"#d298e2" ,"#6119d0",
+"#d2737d" ,"#c0a43c" ,"#f2510e" ,"#651be6" ,"#79806e" ,"#61da5e" ,"#cd2f00" ,
+"#9348af" ,"#01ac53" ,"#c5a4fb" ,"#996635","#b11573" ,"#4bb473" ,"#75d89e" ,
+"#2f3f94" ,"#2f7b99" ,"#da967d" ,"#34891f" ,"#b0d87b" ,"#ca4751" ,"#7e50a8" ,
+"#c4d647" ,"#e0eeb8" ,"#11dec1" ,"#289812" ,"#566ca0" ,"#ffdbe1" ,"#2f1179" ,
+"#935b6d" ,"#916988" ,"#513d98" ,"#aead3a", "#9e6d71", "#4b5bdc", "#0cd36d",
+"#250662", "#cb5bea", "#228916", "#ac3e1b", "#df514a", "#539397", "#880977",
+"#f697c1", "#ba96ce", "#679c9d", "#c6c42c", "#5d2c52", "#48b41b", "#e1cf3b",
+"#5be4f0", "#57c4d8", "#a4d17a", "#225b8", "#be608b", "#96b00c", "#088baf",
+"#f158bf", "#e145ba", "#ee91e3", "#05d371", "#5426e0", "#4834d0", "#802234",
+"#6749e8", "#0971f0", "#8fb413", "#b2b4f0", "#c3c89d", "#c9a941", "#41d158",
+"#fb21a3", "#51aed9", "#5bb32d", "#807fb", "#21538e", "#89d534", "#d36647",
+"#7fb411", "#0023b8", "#3b8c2a", "#986b53", "#f50422", "#983f7a", "#ea24a3",
+"#79352c", "#521250", "#c79ed2", "#d6dd92", "#e33e52", "#b2be57", "#fa06ec",
+"#1bb699", "#6b2e5f", "#64820f", "#1c271", "#21538e", "#89d534", "#d36647",
+"#7fb411", "#0023b8", "#3b8c2a", "#986b53", "#f50422", "#983f7a", "#ea24a3",
+"#79352c", "#521250", "#c79ed2", "#d6dd92", "#e33e52", "#b2be57", "#fa06ec",
+"#1bb699", "#6b2e5f", "#64820f", "#1c271", "#9cb64a", "#996c48", "#9ab9b7",
+"#06e052", "#e3a481", "#0eb621", "#fc458e", "#b2db15", "#aa226d", "#792ed8",
+"#73872a", "#520d3a", "#cefcb8", "#a5b3d9", "#7d1d85", "#c4fd57", "#f1ae16",
+"#8fe22a", "#ef6e3c", "#243eeb", "#1dc18", "#dd93fd", "#3f8473", "#e7dbce",
+"#421f79", "#7a3d93", "#635f6d", "#93f2d7", "#9b5c2a", "#15b9ee", "#0f5997",
+"#409188", "#911e20", "#1350ce", "#10e5b1", "#fff4d7", "#cb2582", "#ce00be",
+"#32d5d6", "#17232", "#608572", "#c79bc2", "#00f87c", "#77772a", "#6995ba",
+"#fc6b57", "#f07815", "#8fd883", "#060e27", "#96e591", "#21d52e", "#d00043",
+"#b47162", "#1ec227", "#4f0f6f", "#1d1d58", "#947002", "#bde052", "#e08c56",
+"#28fcfd", "#bb09b", "#36486a", "#d02e29", "#1ae6db", "#3e464c", "#a84a8f",
+"#911e7e", "#3f16d9", "#0f525f", "#ac7c0a", "#b4c086", "#c9d730", "#30cc49",
+"#3d6751", "#fb4c03", "#640fc1", "#62c03e", "#d3493a", "#88aa0b", "#406df9",
+"#615af0", "#4be47", "#2a3434", "#4a543f", "#79bca0", "#a8b8d4", "#00efd4",
+"#7ad236", "#7260d8", "#1deaa7", "#06f43a", "#823c59", "#e3d94c", "#dc1c06",
+"#f53b2a", "#b46238", "#2dfff6", "#a82b89", "#1a8011", "#436a9f", "#1a806a",
+"#4cf09d", "#c188a2", "#67eb4b", "#b308d3", "#fc7e41", "#af3101", "#ff065",
+"#71b1f4", "#a2f8a5", "#e23dd0", "#d3486d", "#00f7f9", "#474893", "#3cec35",
+"#1c65cb", "#5d1d0c", "#2d7d2a", "#ff3420", "#5cdd87", "#a259a4", "#e4ac44",
+"#1bede6", "#8798a4", "#d7790f", "#b2c24f", "#de73c2", "#d70a9c", "#25b67",
+"#88e9b8", "#c2b0e2", "#86e98f", "#ae90e2", "#1a806b", "#436a9e", "#0ec0ff",
+"#f812b3", "#b17fc9", "#8d6c2f", "#d3277a", "#2ca1ae", "#9685eb", "#8a96c6",
+"#dba2e6", "#76fc1b", "#608fa4", "#20f6ba", "#07d7f6", "#dce77a", "#77ecca"];
+	$(function(){  
+        //Chart.plugins.unregister(ChartDataLabels);
+        var equipmentId = $('#equipment-id').val();
+
+        $(window).resize(function(){
+            adjustView();    
+        });
+
+        adjustView();    
+        
+
+        function adjustView(){
+            var height = $(window).height(), $container = $('#main-container'), 
+            containerHeight = height - 150, chartHeight = containerHeight / 2 - 60, $stackedContainer = $('#stacked-chart-container'), 
+            $modesContainer = $('#modes-chart-container'), $tendencesContainer = $('#tendences-chart-container'),
+            $reportsContainer = $('.reports-container');
+            $container.height(containerHeight);
+            $modesContainer.height(chartHeight);
+            console.log('canvas',$modesContainer.find('canvas'));
+            $modesContainer.find('.chart').height(chartHeight-10);
+            $stackedContainer.height(chartHeight -20);
+            $stackedContainer.find('.chart')[0].getContext('2d').canvas.height = chartHeight-50;
+            $('#main-image-equipment').height(chartHeight + 25);
+            $('#stacked-chart-container').height(chartHeight + 25);
+            $tendencesContainer.height(chartHeight);
+            $tendencesContainer.find('.chart')[0].getContext('2d').canvas.height = chartHeight-10;
+            $reportsContainer.height(containerHeight - 40);
+        }
+
+
+        var  modesTendencesChart = new Chart($('#tendences-chart'), {
+                type: 'scatter',
+                data: {
+                    datasets: [],
+                },
+                 
+                options: {
+                    tooltips: {
+                        callbacks: {
+                            label: function(tooltipItem, data) {
+                                console.log('data->',data);
+                                console.log('tt->',tooltipItem);
+                               var label = data.datasets[tooltipItem.datasetIndex].label;
+                               return label + ': ' + tooltipItem.yLabel + ' condiciones';
+                            }
+                        }
+                    },
+                    plugins:{
+                   datalabels: {
+                    formatter: function(value, context) {
+                      
+                      return null;
+                    },
+                   
+                  },
+                },
+                    maintainAspectRatio: false,
+                    responsive:true,
+                    elements: {
+                        line: {
+                            fill: false,
+                            tension: 0,
+                        }
+                    },
+                    legend:{
+                        position:'bottom',
+                        labels: {
+                            usePointStyle:true,
+                            //fontColor: 'rgb(255, 99, 132)'
+                        }
+                    },
+                    scales: {
+                        xAxes: [{
+                            id: "x-axis-1",
+                            type: 'linear',
+                            position: 'bottom',
+                            scaleLabel: {
+                                display: true,
+                                labelString: "Semana"
+                            },
+                            ticks:{
+                                callback: function(value, index, values) {
+                                    if(value >= 53 ){
+                                        value -= 52;
+                                    }
+                                    return value;
+                                },
+                                precision:0
+                            }
+                        }],
+
+                        yAxes: [{
+                            display: true, 
+                            type: "linear",
+                            position: "left",
+                            id: "y-axis-1",
+                            ticks: {
+                                suggestedMin: 0,
+                                precision:0
+                            },
+                            scaleLabel: {
+                                display: true,
+                                labelString: "Condiciones"
+                            }
+                        },{
+                            display: true, 
+                            type: "linear",
+                            position: "right",
+                            id: "y-axis-2",
+                            ticks: {
+                                suggestedMin: 0,
+                                precision:0
+                            },
+                            scaleLabel: {
+                                display: true,
+                                labelString: "Masivos Polines"
+                            }
+                        }]
+                    }
+                }
+            });
+
+        var ctxStacked = document.getElementById("stacked-chart").getContext('2d');
+var stackedChart = new Chart(ctxStacked ,{
+    type: 'bar',
+    data: {
+        datasets:[{
+                    type: "line",
+                    label: "Acumulado",
+                    borderColor: 'rgba(90,150,132,1)',
+                    backgroundColor: 'rgba(90,150,132,1)',
+                    pointBorderWidth: 3,
+                    fill: false,
+                    data: [],
+                    lineTension: 0,   
+                    yAxisID: 'y-axis-2',
+                     
+                },{
+                    type: "bar",
+                    label: "Condiciones",
+                    lineTension: 0,   
+                    borderColor: 'rgba(90,150,132,.5)',
+                    backgroundColor: 'rgba(90,150,132,.5)',
+                    data: [],
+                    yAxisID: 'y-axis-1',
+                    datalabels: {
+                        formatter: function(value, context) {
+                            return null;
+                        }
+                      }
+                }],
+        labels: [],
+        /*
+        labels: ["<  1","1 - 2","3 - 4","5 - 9","10 - 14","15 - 19","20 - 24","25 - 29","> - 29"],
+        datasets: [{
+            label: 'Employee',
+            backgroundColor: "#caf270",
+            data: [12, 59, 5, 56, 58,12, 59, 87, 45],
+        }, {
+            label: 'Engineer',
+            backgroundColor: "#45c490",
+            data: [12, 59, 5, 56, 58,12, 59, 85, 23],
+        }, {
+            label: 'Government',
+            backgroundColor: "#008d93",
+            data: [12, 59, 5, 56, 58,12, 59, 65, 51],
+        }, {
+            label: 'Political parties',
+            backgroundColor: "#2e5468",
+            data: [12, 59, 5, 56, 58, 12, 59, 12, 74],
+        }],
+        */
+    },
+options: {
+    layout: {
+                padding: {
+                    left: 0,
+                    right: 0,
+                    top: 50,
+                    bottom: 0
+                }
+            },
+     plugins:{
+               datalabels: {
+                formatter: function(value, context) {
+                    console.log('formatter',value,context);
+                  var fValue = null;
+                  if(value > 0){
+                    fValue = value+'%';
+                  }
+                  return fValue;
+                },
+                color: '#fff',
+                backgroundColor:'#18252D',//
+                align:'top',
+                borderRadius:3,
+                offset:10,
+                font:{
+                    size:10
+                },
+                padding:{
+                    top:2,
+                    bottom:2
+                }
+              },
+              },
+    animation: {
+            duration: 0 // general animation time
+        },
+    tooltips: {
+      displayColors: false,
+      callbacks:{
+        mode: 'x',
+      },
+    },
+    scales: {
+      xAxes: [{
+        stacked: true,
+        gridLines: {
+          display: false,
+        }
+      }],
+      yAxes: [{
+                        type: "linear",
+                        position: "left",
+                        id: "y-axis-1",
+                        stacked: true,
+                        ticks: {
+                            precision:0,
+                            suggestedMin: 0
+                        },
+                        scaleLabel: {
+                            display: true,
+                            labelString: "Condiciones"
+                        }
+                    },{
+                        type: "linear",
+                        position: "right",
+                        id: "y-axis-2",
+                        ticks: {
+                            suggestedMin: 0,
+                            precision:0,
+                            callback: function(value) {
+                                return value + "%";
+                            }
+                        },
+                        gridLines: {
+                            display:false
+                        },
+                        scaleLabel: {
+                            display: true,
+                            labelString: "Porcentaje"
+                        }
+                    }]
+        },
+        responsive: true,
+        maintainAspectRatio: false,
+        legend: { display:false },
+    }
+});
+
+
+
+
+
+        function loadReports(){
+            $.ajax({
+                url    : '/backend/reports/get-reports-from-dashboard',
+                type   : 'get',
+                dataType: "json",
+                data   : {'equipment':equipmentId},
+                success: function (response){    
+
+                    localStorage.setItem('main-ic-dch-equipment-place-holder', JSON.stringify(response.data));
+
+                    $('.indicator-container-0').removeClass('indicator-container-value-0 indicator-container-value-1 indicator-container-value-2 indicator-container-value-3 indicator-container-value-4');
+                    $('.indicator-container-0').addClass('indicator-container-value-'+response.indicators[0]);
+                    $('.indicator-container-1').removeClass('indicator-container-value-0 indicator-container-value-1 indicator-container-value-2 indicator-container-value-3 indicator-container-value-4');
+                    $('.indicator-container-1').addClass('indicator-container-value-'+response.indicators[1]);
+                    $('.indicator-container-2').removeClass('indicator-container-value-0 indicator-container-value-1 indicator-container-value-2 indicator-container-value-3 indicator-container-value-4');
+                    $('.indicator-container-2').addClass('indicator-container-value-'+response.indicators[2]);
+                    $('.indicator-container-3').removeClass('indicator-container-value-0 indicator-container-value-1 indicator-container-value-2 indicator-container-value-3 indicator-container-value-4');
+                    $('.indicator-container-3').addClass('indicator-container-value-'+response.indicators[3]);
+
+                    $('.reports-container').html(response.html);
+                    $('#loading-container').hide();
+                    modesChart.config.data.labels = response.components.labels;
+                    modesChart.config.data.datasets[0].backgroundColor = response.components.colors;
+                    modesChart.config.data.datasets[0].data = response.components.values;
+                    modesChart.update();
+
+                    modesTendencesChart.config.data.datasets = response['tendences']['valuesTG'];
+                    //$("#chart-modes-legend").html(modesChart.generateLegend());
+                    //modesTendencesChart.config.data.datasets[0].data.pointRadius = 2;
+                    //modesTendencesChart.config.data.datasets[1].data.pointRadius = 2;
+                    modesTendencesChart.update();  
+
+                    stackedChart.config.data.labels = response.stacked.labels;
+
+                    stackedChart.config.data.datasets[1].data = response.stacked.data
+                    stackedChart.config.data.datasets[0].data = response.stacked.percentages;
+                            
+                    
+                    stackedChart.update();
+
+
+                    setTimeout(() => {
+                        //loadReports();  
+                    }, 5000);; 
+                },
+                error  : function (){
+                    console.log('internal server error');
+                }
+            }); 
+        } 
+        setTimeout(() => {
+                        loadReports();  
+        }, 1000);; 
+        
+        var allEvaluationNames = [['Muy Bueno','Bueno','Regular','Malo','Muy Malo'],
+      //['Situación Destacable','Condición Estándar','Condición Sub Estándar','Riesgo Moderado','Alto Riesgo','Intolerable'],
+      ['Situación Destacable','Condición Estándar','Condición Sub Estándar','Riesgo Moderado','Alto Riesgo','Intolerable'],
+      ["Destacable", "Segun Estándar", "Programable", "Urgente", "Inmediato"],
+      ['Muy Bueno','Bueno','Regular','Malo','Muy Malo'],
+      ['Muy Bueno','Bueno','Regular','Malo','Muy Malo'],
+      ['Muy Bueno','Bueno','Regular','Malo','Muy Malo'],
+      ['Muy Bueno','Bueno','Regular','Malo','Muy Malo']];
+      var opLabels = ['Destacable','Segun Estándar','Regular','Sub Estándar','Inaceptable'];
+      var allEvaluationColors = [["#30B32D",'#B8E759','#ffeb3b', '#ffa500','#F03E3E'],
+      ["#30B32D",'#B8E759','#ffeb3b', '#ffa500','#D86D15','#F03E3E'],
+      ["#30B32D",'#B8E759','#ffeb3b', '#ffa500','#F03E3E'],
+      ["#30B32D",'#B8E759','#ffeb3b', '#ffa500','#F03E3E'],
+      ["#30B32D",'#B8E759','#ffeb3b', '#ffa500','#F03E3E'],
+      ["#30B32D",'#B8E759','#ffeb3b', '#ffa500','#F03E3E']];
+      var  configPiePartialAcc = {
+        type: 'doughnut',
+        cutoutPercentage: 30,
+        data: {
+            datasets: [{
+                data: [],
+                
+                backgroundColor: [
+                    '#008000',
+                    '#808080',                    
+                    '#90ee90',
+                    '#ffff00',
+                    '#ffa500',
+                    '#ff0000',
+                ],
+            }],
+            labels: scopeNames
+        },
+
+        options: {
+             plugins:{
+                datalabels: {
+                    formatter: function(value, context) {
+                        console.log('formatter',value,context);
+                      var fValue = null;
+                      if(value > 0){
+                        fValue = value+'%';
+                      }
+                      return fValue;
+                    },
+                    color: '#fff',
+                    backgroundColor:'#18252D',//
+                    align:'top',
+                    borderRadius:3,
+                    offset:10,
+                    font:{
+                        size:10
+                    },
+                    padding:{
+                        top:1,
+                        bottom:1
+                    }
+                  },
+            },
+            title: {
+                display: true,
+                fontSize: 12,
+                text: 'Distribución Cumplimiento',
+                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+            },
+            //events: ['click'],
+            onClick : function (e, i) {
+               var e = i[0];
+               console.log(e._index)     
+               var value = e._index;       
+               goToReportAccomplishmentPage(value);
+            },
+            legend: {
+                display: true,
+                position:'bottom',
+                labels: {
+                    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                    fontSize: 10,
+                    boxWidth: 10,
+                    usePointStyle:true
+                    //fontColor: 'rgb(255, 99, 132)'
+                }
+            },
+            legendCallback: function(chart) {
+            // Return the HTML string here.
+                //alert(chart);
+            },
+            responsive: true,
+            pieceLabel: {
+                render: 'percentage',
+                fontSize: 12,
+ 
+                precision: 0,
+                showActualPercentages: true,
+            }
+        }
+    };
+    var  configPieAcc = {
+        type: 'doughnut',
+        cutoutPercentage: 30,
+        data: {
+            datasets: [{
+                data: [],
+                
+backgroundColor: [
+                    'rgba(223, 223, 223, 0.2)',
+                    'rgba(3, 169, 244, 0.2)',
+                ],
+                borderColor:[
+                                             
+                    'rgba(200, 200, 200, 1)', 
+                    'rgba(3, 169, 244,1)', 
+                ],
+                
+                label: 'Seguridad'
+            }],
+            labels: [
+                "Cumplimiento",
+                "Faltante",
+            ]
+        },
+        options: {
+            title: {
+                display: true,
+                fontSize: 12,
+                text: 'Cumplimiento Total',
+                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+            },
+            //events: ['click'],
+            onClick : function (e, i) {
+               var e = i[0];
+               console.log(e._index)     
+               var value = e._index;       
+               goToReportAccomplishmentPage(value);
+            },
+            legend: {
+                display: true,
+                position:'bottom',
+                labels: {
+                    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                    fontSize: 10,
+                    boxWidth: 10,
+                    padding: 20
+                    //fontColor: 'rgb(255, 99, 132)'
+                }
+            },
+            legendCallback: function(chart) {
+            // Return the HTML string here.
+                //alert(chart);
+            },
+            responsive: true,
+            pieceLabel: {
+                render: 'percentage',
+                fontSize: 10,
+ 
+                precision: 2
+            }
+        }
+    };
+    var  configPieOp = {
+        type: 'doughnut',
+        data: {
+            datasets: [{
+                data: [],                
+                backgroundColor: [    
+                    'rgba(46, 183, 148, .35)',
+                    'rgba(156, 204, 101, .35)',
+                    'rgba(255, 235, 59, .35)',                                        
+                    'rgba(255, 206, 86, .35)',
+                    'rgba(255, 99, 32, .35)',                                    
+                ],
+                borderColor: [                    
+                    'rgba(46, 183, 148, 1)',
+                    'rgba(156, 204, 101, 1)',
+                    'rgba(255, 235, 59, 1)',                                        
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(255, 99, 32, 1)',
+                ],
+                label: 'Operativo',
+                borderWidth: 3,
+            }],
+            labels: ["Destacable", "Segun Estándar", "Programable", "Urgente", "Inmediato"]
+        },
+        plugins:null,
+        options: {
+ 
+            percentageInnerCutout: 70,
+            title: {
+                display: false,
+                fontSize: 12,
+                text: 'Distribución Evaluaciones',
+                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+            },
+            //events: ['click'],
+            onClick : function (evt, i) {
+               console.log ('legend onClick', evt);
+               console.log('legd item', i );
+               var e = i[0];
+               console.log(e._index)
+               var x_value = this.data.labels[e._index];
+               var y_value = this.data.datasets[0].data[e._index];
+               console.log('label ',x_value);
+               console.log('y',y_value);
+               var value = opLabels.indexOf(x_value);
+               //console.log(actualStart.format('YYYY/MM/DD')+' - '+actualEnd.format('YYYY/MM/DD'));
+               console.log('Onclick ==>',value);
+               goToReportListingPage(2,value);
+            },
+            legend: {
+                display: true,
+                position:'right',
+                labels: {
+                    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                    fontSize: 10,
+                    boxWidth: 10,
+                    usePointStyle:true
+                    //fontColor: 'rgb(255, 99, 132)'
+                }
+            },
+            legendCallback: function(chart) {
+            // Return the HTML string here.
+                //alert(chart);
+            },
+            maintainAspectRatio :false,
+            responsive: true,
+            pieceLabel: {
+                render: 'percentage',
+                fontSize: 10,
+
+                precision: 2
+            }
+        }
+    };
+    var configStackedData = {
+    };
+
+    var configStackedType = {
+        type: 'bar',
+        //events: ["click"],
+        datasets: configStackedData,
+        plugins:null,
+        options: {
+            onClick:function(e){
+                var activePoints = evaluationsChart.getElementsAtEvent(e);
+                var activePoint  = evaluationsChart.getElementAtEvent(event);
+                var selectedIndex = activePoint[0]._datasetIndex;
+                console.log(selectedIndex, activePoints, activePoint);
+                console.log(e);
+                //alert(selectedIndex);
+                console.log(scopeSlugs);
+                var auxType = scopeSlugs[activePoint[0]._index];
+                window.open(baseUrl+'type='+auxType+'&value='+selectedIndex+'&start='+window.actualStart+'&end='+window.actualEnd);
+
+            },
+            title: {
+                display: true,
+                text: 'Distribución Evaluaciones por Tipo'
+            },
+            legend:{
+                display:false,
+            },
+            tooltips: {
+                mode: 'index',
+                intersect: false,
+                callbacks: {
+                    label: function(tooltipItem, data) {
+                        //console.log(tooltipItem);
+                        //console.log(data);
+                        var label = allEvaluationNames[tooltipItem.index][tooltipItem.datasetIndex];
+
+                        if (label) {
+                            label += ' : '+tooltipItem.yLabel;//+':'+tooltipItem.datasetIndex+':'+tooltipItem.index+':';
+                        }
+                        //label += data.datasets[tooltipItem.yLabel].data[tooltipItem.datasetIndex];
+                        return label;
+                    }
+                    
+                }
+
+            },
+            responsive: true,
+            scales: {
+                xAxes: [{
+                    stacked: true,
+                }],
+                yAxes: [{
+                    stacked: true,
+                    ticks: {
+                        beginAtZero: true,
+                            stepSize: 1
+                    },
+                    scaleLabel: {
+                        display: false,
+                        labelString: 'Percentage',
+                    },
+
+                }]
+            }
+        }
+    };
+    function hexToRgb(hex) {
+        var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+        return result ? {
+            r: parseInt(result[1], 16),
+            g: parseInt(result[2], 16),
+            b: parseInt(result[3], 16)
+        } : null;
+    }
+
+ var dayINeed = 2; // for Thursday
+        var today = moment().isoWeekday();
+
+        var data = new Array();
+
+        if(dayINeed <= today){
+            var end = moment().add(1, 'weeks').isoWeekday(dayINeed).subtract(1,'days');
+            var start = moment().isoWeekday(dayINeed);// moment().subtract(29, 'days');
+        }else{
+            var start = moment().subtract(1, 'weeks').isoWeekday(dayINeed);
+            var end = moment().isoWeekday(dayINeed).subtract(1,'days');// moment().subtract(29, 'days');
+        }    
+        console.log(moment());
+        console.log(moment().weekday());
+        $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+        window.actualStart = start.format('YYYY/MM/DD');
+        window.actualEnd = end.format('YYYY/MM/DD'); 
+        /*
+        loadDataFromServer();
+
+        $('#scope-select').change(function(){
+            loadDataFromServer();            
+        });
+        $('#mode-select').change(function(){
+            loadDataFromServer();            
+        });
+        */
+ 
+
+        //var ctx = $('#main-chart');
+        //mainChart = new Chart(ctx, config);
+
+
+    options =  {
+            bezierCurve : false,
+            maintainAspectRatio: false,
+            responsive: true,
+            title:{
+                display:true,
+                text:"Cantidad de Reportes 2"
+            },
+            tooltips: {
+                mode: 'index',
+                intersect: false
+            },
+            scales: {
+                xAxes: [{
+                    //stacked: true,
+                    type: "time",
+                    time: {
+                        unit: 'day',
+                        unitStepSize: 0.5,
+                        round: 'day',
+                        tooltipFormat: "MMM D",
+                        displayFormats: {
+                          day: 'MMM D'
+                        }
+                      },
+                    
+                    display: true,
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Fecha'
+                    },
+                    
+                    
+                }],
+                yAxes: [{
+                    //stacked: true,
+                    
+                    display: true,
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'value'
+                    },
+                    ticks: {
+                        beginAtZero: true,                            
+                    },
+                    
+                }]
+            },elements: {                    
+            line: {
+                tension: 0
+            },
+            point: {
+                radius: 0,
+                hitRadius: 10,
+                hoverRadius: 4,
+                hoverBorderWidth: 3,
+            }
+        },
+                };
+
+    config = {
+        type: 'line',
+        data: {
+            datasets: [
+                {
+
+                  /*
+'rgba(0, 187, 146,1)',                          
+                    'rgba(223, 223, 223, 1)' 
+                    '#009F7B',  //  0, 159, 123 Avance
+                    '#61D3BA',  //  97, 211, 186 Faltante      
+                    '#38C2A3',  //  56, 194, 163
+                    #007A5F
+                  */
+                    data: [],                              
+                    label: 'Planificación',
+                    lineTension: 0, 
+                    //stack: 'Stack 0',
+                    fill: 'rgba(223, 223, 223, .5)',
+                    borderWidth: 3,
+                    borderColor: 'rgba(200, 200, 200, 1)',
+                    backgroundColor: 'rgba(223, 223, 223,.35)'    
+                },
+                {
+                    data: [],                              
+                    label: 'Cumplimiento',
+                    lineTension: 0, 
+                    //borderWidth: 5,
+                    borderWidth: 3,
+                    borderColor: 'rgba(46, 183, 148, 1)',
+                    fill: 'origin',
+                    backgroundColor: 'rgba(46, 183, 148, .35)'    
+                },
+                /*,
+                {
+                    data: [],                              
+                    label: ' Actividad Avance 2',
+                    //stack: 'Stack 1',
+                    backgroundColor: 'rgba(108,222,255,.5)'    
+                },
+                {
+                    data: [],                              
+                    label: ' Actividad Avance 3',
+                    //stack: 'Stack 1',
+                    backgroundColor: 'rgba(0,99,81,.5)'    
+                },
+                {
+                    data: [],                              
+                    label: ' Actividad Avance 4',
+                    //stack: 'Stack 1',
+                    backgroundColor: 'rgba(185,255,242,.5)'    
+                }
+                */
+            ],
+            labels: [
+
+            ]
+        }
+        ,
+        plugins:null,
+        options: {            
+            maintainAspectRatio: false,
+            responsive: true,
+            title:{
+                display:false,
+                text:"Evolución Cumplimiento"
+            },
+            tooltips: {
+                mode: 'index',
+                intersect: false
+            }, 
+            legend: {
+                display: true,
+                position:'bottom',
+                labels: {
+                    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                    fontSize: 10,
+                    boxWidth: 10,
+                    usePointStyle:true
+                    //fontColor: 'rgb(255, 99, 132)'
+                },
+                
+            },
+            scales: {
+                xAxes: [{
+                    //stacked: true,
+                    type: "time",
+                    time: {
+                        unit: 'day',
+                        unitStepSize: 0.5,
+                        round: 'day',
+                        tooltipFormat: "MMM D",
+                        displayFormats: {
+                          day: 'MMM D'
+                        }
+                      },
+                    
+                    display: true,
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Fecha'
+                    },
+                    
+                    
+                }],
+                yAxes: [{
+                    //stacked: true,
+                    
+                    display: true,
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Cantidad Reportes'
+                    },
+                    ticks: {
+                        beginAtZero: true,   
+                        //stepSize: 5,                         
+                    },
+                    
+                }]
+            }
+        }
+        
+    };
+
+
+
+    ctx = $('#main-chart');
+    ctxAccomplishment = $("#accomplishment-chart");
+    ctxEvaluations = $("#evaluations-chart");
+    ctxPartialAccomplishment = $("#partial-accomplishment-chart");
+
+    function cb(start, end) {
+        $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+        filteredData = true;
+
+        window.actualStart = start.format('YYYY/MM/DD');
+        window.actualEnd = end.format('YYYY/MM/DD');
+
+        console.log(":::::::::::::::::::::::::::::::::::::::::");
+        console.log(start);
+        console.log(end);
+        //loadDataFromServer();        
+    }
+
+    //cb(start, end);
+
+    $('#reportrange').daterangepicker({
+        "locale": {            
+            "separator": " - ",
+            "applyLabel": "Aplicar",
+            "cancelLabel": "Cancelar",
+            "fromLabel": "Desde",
+            "toLabel": "a",
+            "customRangeLabel": "Específico",
+            "weekLabel": "W",
+            "daysOfWeek": [
+                "Do",
+                "Lu",
+                "Ma",
+                "Mi",
+                "Ju",
+                "Vi",
+                "Sa"
+            ],
+            monthNames: [
+                "Enero",
+                "Febrero",
+                "Marzo",
+                "Abril",
+                "Mayo",
+                "Junio",
+                "Julio",
+                "Agosto",
+                "Septiembre",
+                "Octubre",
+                "Noviembre",
+                "Diciembre"
+            ],
+            months: ["Enero",
+                "Febrero",
+                "Marzo",
+                "Abril",
+                "Mayo",
+                "Junio",
+                "Julio",
+                "Agosto",
+                "Septiembre",
+                "Octubre",
+                "Noviembre",
+                "Diciembre"],
+            "firstDay": 1
+        },
+        maxDate: moment(),
+        startDate: start,
+        endDate: end,
+        ranges: {
+           'Esta Semana': [moment().startOf('week').add(1,'day'), moment().endOf('week').add(1,'day')],
+           'Hoy': [moment(), moment()],
+           'Ayer': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+           'Últimos 7 días': [moment().subtract(6, 'days'), moment()],
+           'Últimos 30 días': [moment().subtract(29, 'days'), moment()],
+           'Este mes': [moment().startOf('month'), moment().endOf('month')],
+           'Último mes': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        },
+        days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+        daysShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+        daysMin: ["Do",
+                "Lu",
+                "Ma",
+                "Mi",
+                "Ju",
+                "Vi",
+                "Sa"],
+        months: ["Enero",
+                "Febrero",
+                "Marzo",
+                "Abril",
+                "Mayo",
+                "Junio",
+                "Julio",
+                "Agosto",
+                "Septiembre",
+                "Octubre",
+                "Noviembre",
+                "Diciembre"],
+        monthsShort: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+        today: "Today",
+    }, cb);
+
+    var stackedColors = ["#30B32D",'#B8E759','#ffeb3b', '#ffa500','#D86D15','#F03E3E'];
+
+    var loadedSingleScope = false;
+    //evaluationsChart = new Chart(ctxEvaluations, configPieOp);
+    //mainChart = new Chart(ctx, config, options);
+    var ctxMode = $('#modes-chart');
+    var modesChart = new Chart(ctxMode,  {
+        type: 'pie',
+        data: {
+            datasets:[{
+                data:[],
+                backgroundColor:colorsArray,
+            }]
+        },
+        options: {
+         plugins:{
+               datalabels: {
+               
+                color: '#fff',
+                backgroundColor:'#18252D',//
+                
+                borderRadius:3,
+                
+                font:{
+                    size:12
+                },
+                padding:{
+                    top:2,
+                    bottom:2
+                }
+              },
+          },
+          'onClick' : function (evt, item) {
+                        console.log ('legend onClick', evt);
+                        console.log('legd item', item);
+                        console.log('legd item', item[0]);
+                        var labels = item[0]._chart.config.data.labels;
+                        console.log('legd item l', labels);
+                        var index = item[0]._index; 
+                        console.log('->',labels[index]);
+
+                        if(labels[index] == 'POLINES'){
+                            window.open('/backend/massive-reports/create?fromEquipment='+$('#equipment-code').val());
+                        }
+                        /*
+                        var mLabel = item[0]._view.label, mIndex = modeLabels.indexOf(mLabel);
+                        if(mIndex == 7){
+                            window.open('http://rema-tiptop.ecoreport.cl/backend/reports/print-conveyor-report?id=34313');
+                        }
+                        */
+                        //window.open('/backend/data/view-reports?plant=12&area=*&mode='+mIndex+'&prio=d&equipment=<?= $equipment->short_code ?>');
+                    },
+                    /*
+            pieceLabel: {
+                render: 'percentage',
+                position: 'outside',
+                fontSize: 12,
+                
+                precision: 1,
+                showActualPercentages: true,
+            },   
+            */         
+            layout: {
+                padding: {
+                    left: 0,
+                    right: 0,
+                    top: 0,
+                    bottom: 0
+                }
+            },
+            maintainAspectRatio: false,
+      responsive:true,
+                tooltips: {
+      displayColors: false,
+      callbacks:{
+        mode: 'x',
+      },
+    },
+            legend: {     
+                position:'right',
+            usePointStyle:true,   
+                display:true},
+                legendCallback: function (chart) {             
+            // Return the HTML string here.
+            console.log('legend->',chart);
+            var text = [], max = 10;
+            text.push('<ul class="' + chart.id + '-legend">');
+            var cant = 0;
+            for(var i=0;i<chart.config.data.datasets[0].data.length;i++){
+                if(chart.config.data.datasets[0].data[i] > 0){
+                    cant++;
+                }
+            }
+            for (var i = 0; i <  max && i < cant; i++) {
+                text.push('<li><span id="legend-' + i + '-item" style="background-color:' + chart.data.datasets[0].backgroundColor[i] + '"   onclick="updateDataset(event, ' + '\'' + i + '\'' + ')"></span>');
+                if (chart.data.labels[i]) {
+                    text.push(chart.data.labels[i]);
+                }
+                text.push('</li>');
+            }
+            text.push('</ul>');
+            return text.join("");
+        },
+            title: {
+                display: false,
+                text: ''
+            }
+        }
+    });
+
+    function loadPlaceHolder(){
+        
+        var placeHolder = localStorage.getItem('main-ic-dch-equipment-place-holder');
+
+        console.log('ph->',placeHolder);
+
+        if(placeHolder){
+
+            var response = {};
+            response.data  = JSON.parse(placeHolder);
+        }
+    }
+    function loadDataFromServer(){
+        console.log("::::::::::::::::::::::::::::::::::::::::: 2 ");
+        console.log(window.actualStart);
+        console.log(window.actualEnd);
+        var scope = $('#scope-select').val();
+        var mode = $('#mode-select').val();
+        
+        $.ajax({
+                url    : '/backend/site/get-reportability-data',
+                type   : 'get',
+                dataType: "json",
+                data   : {'scope':0,'mode':9,'start':actualStart,'end':actualEnd,'equipment':equipmentId},
+                success: function (response){    
+
+                    console.log(response);
+                    console.log(response.totalAccomplishment);
+                    console.log(response.totalAccomplishment[1]);
+                    if(response.totalAccomplishment[1] == 0 || response.totalAccomplishment[0] == 0){
+                         $.ajax({
+                            url    : '/backend/site/get-reportability-data',
+                            type   : 'get',
+                            dataType: "json",
+                            data   : {'scope':0,'mode':2,'start':actualStart,'end':actualEnd},
+                            success: function (response){    
+                                console.log(response);
+                                console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!>>>>> ');
+                                configPieOp.data.datasets[0].data = response['reportValues'];
+                                evaluationsChart.update();
+
+                                config.data.datasets[0].data = response['dayGoals'];
+                                config.data.datasets[1].data = response['reportsByDates']
+                                mainChart.update();  
+                                                                    
+                            },
+                            error  : function (){
+                                console.log('internal server error');
+                            }
+                        });    
+                         
+                    }else{
+                        console.log(response);
+                        console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!>>>>> ');
+                        configPieOp.data.datasets[0].data = response['reportValues'];
+                        evaluationsChart.update();
+
+                        config.data.datasets[0].data = response['dayGoals'];
+                        config.data.datasets[1].data = response['reportsByDates']
+                        mainChart.update();  
+                    }
+                    
+
+
+
+                                                        
+                },
+                error  : function (){
+                    console.log('internal server error');
+                }
+            });    
+
+
+        
+    }
+
+
+    var goToReportAccomplishmentPage = function(value){
+
+        if(value == 0){
+            value = 'achieved';
+        }else if(value == 1){
+            value = 'left';
+
+        }
+        window.open(baseUrlA+'type=accomplishment-'+value+'&start='+window.actualStart+'&end='+window.actualEnd);
+    };
+
+    var goToReportListingPage = function(type, value){
+
+        console.log('Function ==>'+type+'-'+value);
+        var auxType = '';
+        if(type == 1){
+            auxType = 'operative';
+        }else if(type == 2){
+            auxType = 'security';
+        }
+
+        if(value == undefined){
+            value = '';
+        }
+
+        if(defaultScope != null){
+            auxType = scopeSlugs[defaultScope];
+            console.log('default scope null ->',defaultScope);
+        }else{
+            console.log('default scope not null ->',type);
+        }
+        window.open(baseUrl+'type=maintenance&value='+value+'&start='+window.actualStart+'&end='+window.actualEnd);
+    };
+
+    setInterval(ajaxCall, 5000); //300000 MS == 5 minutes
+
+    function ajaxCall() {
+        if(!filteredData){
+            //loadDataFromServer(); 
+        }                   
+    }
+    });

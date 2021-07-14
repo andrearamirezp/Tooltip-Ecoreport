@@ -1,0 +1,401 @@
+body.theme-codelco a{
+	color:#e96c28;
+}
+body.theme-codelco a:hover{
+	color:#2B4552;
+}
+body.theme-codelco, body.theme-codelco p, body.theme-codelco span{
+	font-size: 0.8rem;
+}
+body.theme-codelco .app-theme-white.app-container {
+    background: #2B4552 !important;
+}
+body.theme-codelco .app-theme-white .app-header{
+    background-color:#e96c28 !important;
+}
+body.theme-codelco .app-theme-white .app-sidebar{
+    background-color:#18252D !important;
+}
+body.theme-codelco .app-header .app-header__content .header-menu .nav-link {
+    color: #fff;
+}
+body.theme-codelco .app-header .app-header__content .app-header-right {
+    color: #fff;
+}
+.hamburger-inner, .hamburger-inner::before, .hamburger-inner::after{
+	background-color: #fff;	
+}
+body.theme-codelco .closed-sidebar .app-sidebar .app-sidebar__inner .metismenu-icon{
+	color: #fff;
+}
+body.theme-codelco .app-header .app-header__content .header-menu .nav-link i{
+	color: #fff;
+}
+body.theme-codelco li.app-sidebar__heading {
+    color: #fff;
+}
+body.theme-codelco .vertical-nav-menu li a.mm-active,
+body.theme-codelco .vertical-nav-menu li a:hover{
+	background-color: #e96c28;
+	color: #fff;
+}
+body.theme-codelco .vertical-nav-menu i.metismenu-state-icon, .vertical-nav-menu i.metismenu-icon{
+	opacity: 1;
+}
+body.theme-codelco .vertical-nav-menu li a{
+	color:#c5c5c5;
+}
+body.theme-codelco .hamburger.is-active .hamburger-inner, 
+body.theme-codelco .hamburger.is-active .hamburger-inner::before, 
+body.theme-codelco .hamburger.is-active .hamburger-inner::after{
+	background-color: #fff;
+}
+body.theme-codelco .app-theme-white.fixed-header .app-header__logo{
+	background-color: unset;
+}
+body.theme-codelco .app-header__logo .logo-src{
+	background-image: url(/backend/codelco/images/logo-codelco-h.png);
+}
+body.theme-codelco .app-full-size{
+	padding: 0;
+}
+body.theme-codelco .app-main__content-full {    
+    width: 100%;
+    height: 100%;
+}
+body.theme-codelco .bg-dark{
+    background-color:#2B4552 !important;
+}
+body.theme-codelco .footer-dark .app-footer .app-footer__inner{
+    background-color:#2B4552 !important;
+    color:#fff;
+}
+body.theme-codelco .footer-dark .app-footer .app-footer__inner a{
+	color:#8c96a0;
+}
+body.theme-codelco .app-header .app-header__content .header-menu .nav-link {    
+    background-color: #2B4552;
+    color: #fff;
+    border-radius: 6px;
+}
+body.theme-codelco .bg-image-mine {    
+    background-image: url(https://viago.ca/wp-content/uploads/2017/11/MINE-DE-CHUQUICAMATA-CHILI.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+body.theme-codelco .form-control{
+    font-size: 14px;
+}
+body.theme-codelco .widget-content-wrapper p {
+    text-transform: uppercase;
+    font-style: italic;
+    padding: 15px 20px 0 0;
+    color: rgba(256,256,256,.7);
+}
+body.theme-codelco .nav-tabs .nav-link.active {
+    color: #e96c28 !important
+}
+
+body.theme-codelco .nav-tabs {
+    border-bottom: 1px solid #e96c28 !important
+}
+
+body.theme-codelco .nav-tabs .nav-link:hover {
+    color: #e96c28 !important
+}
+.z-index-1{
+	z-index: 1;
+}
+.p-relative{
+	position: relative;
+}
+.btn-primary{
+	background-color:#e96c28 !important;
+	border-color: #e96c28 !important;
+	color:#fff !important;
+}
+.btn-secondary{	
+	background-color:#2B4552 !important;
+	border-color: #2B4552 !important;
+	color:#fff !important;
+}
+.btn-light{
+    background-color:#f5f5f5 !important;
+    border-color: #dfdfdf !important;
+    color:#333 !important;
+}
+.btn-light:hover{
+    background-color:#dfdfdf !important;
+}
+.form-control:disabled{
+    background-color: #e9ecef !important;
+    opacity: 1;
+}
+body.theme-codelco .overlay-after-dark:after{
+	background-color:rgba(43,69,82,.85);
+	content:'';
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	left: 0;
+	top: 0;
+	display: inline-block;
+	z-index: 0;
+}
+.app-wrapper-footer.footer-dark {
+    z-index: 1;
+}
+.plants-home-container {
+    position: relative;
+    z-index: 1;
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+}
+
+.plant-home-container {
+    display: inline-block;
+    width: 38%;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    text-align: center;
+}
+.plant-chart-wrapper {
+    display: inline-block;
+    height: 400px;
+    width: 100%;
+    background: rgba(0,0,0,.25);
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgb(0 0 0 / 25%);
+    margin-bottom: 10px;
+}
+.plants-home-container .plant-home-container:first-child {
+    left: 10%;
+}
+
+.plants-home-container .plant-home-container:last-child {
+    right: 10%;
+}
+
+.legend-container {
+    display: inline-block;
+    position: absolute;
+    /* left: 50%; */
+    /* top: -1px; */
+    /* transform: translateX(-50%); */
+    font-size: 12px;
+    line-height: 8px;
+    background: #5c7988 !important;
+    padding: 0 6px 6px 10px;
+    margin-top: 10px;
+    border-radius: 5px;
+    width: 100%;
+    left: 0;
+    /* top: 100%; */
+    text-align: center;
+    bottom: 5px;
+    z-index: 1;
+    width: 70%;
+    left: 15%;
+    color: #fff;
+}
+.legend-container span {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    background: #333;
+    display: inline-block;
+    /* margin-top: 12px; */
+    /* margin-left: 10px; */
+    line-height: 12px;
+    margin: 5px 10px 0 2px;
+    position: relative;
+    top: 1px;
+}
+.legend-container span:nth-child(2){
+  background-color:#F03E3E;
+}
+.legend-container span:nth-child(3){
+  background-color:#ffa500;
+}
+.legend-container span:nth-child(4){
+  background-color:#ffeb3b;  
+}
+.legend-container span:nth-child(5){
+  background-color:#30B32D;
+}
+.legend-container span:nth-child(5){
+  background-color:#dfdfdf;
+}
+.legend-container p {
+    display: inline-block;
+    margin: 0 5px;
+    color: #fff;
+}
+.plant-info-container {
+    display: inline-block;
+    width: calc(100% - 20px);
+}
+.plant-info-container p {
+    padding: 0;
+    margin: 0 20%;
+    color: #dfdfdf;
+    border-bottom: 1px solid #666;
+    width: 60%;
+    margin-bottom: 5px;
+    padding-bottom: 5px;
+}
+.plant-info-container p span:first-child {
+    width: 45%;
+    display: inline-block;
+    text-align: left;
+}
+.plant-info-container p span:last-child {
+    width: 45%;
+    display: inline-block;
+    text-align: right;
+    font-weight: bold;
+}
+.plant-chart-container {
+    display: inline-block;
+    width: 100%;
+    height: 250px;
+    margin: 30px 0 20px;
+}
+form label.control-label{
+	color:#e96c28 !important;
+    margin-bottom: .25rem;
+}
+.form-control[readonly] {
+    background-color: #fff;    
+}
+.form-group.field-report-activity-name input {
+	cursor: pointer !important;
+}
+.form-group.field-report-activity-name i.fa,
+.form-group.field-report-date-mask i.fa{
+    position: absolute;
+    color:#e96c28 !important;
+    right: 10px;
+    bottom: 10px;
+    font-size: 18px;    
+}
+.report-activity-name-over {
+    position: absolute;
+    display: inline-block;
+    width: 100%;
+    height: calc(100% - 20px);
+    top: 20px;
+    cursor: pointer;
+}
+body.theme-codelco  .dataTables_wrapper .dataTables_paginate span .paginate_button{
+	background: #2B4552 !important;
+	border-radius: 50%;
+	border: none;
+	box-shadow: 0 0 3px rgba(0,0,0,.3);
+	color:#fff !important;
+    max-height: 35px;
+    padding: 0;
+    min-width: 35px;
+    min-height: 35px;
+    line-height: 35px;    
+}
+body.theme-codelco .dataTables_wrapper .dataTables_paginate .paginate_button.current, 
+body.theme-codelco .dataTables_wrapper .dataTables_paginate .paginate_button:hover{
+	border: none !important;
+	background: #18252D !important;
+	color:#fff !important;
+}
+body.theme-codelco .sub-title.card-title{
+    text-transform: uppercase;
+    color: #2B4552 !important;    
+    font-size: .88rem !important;
+}
+.report-image, .table-image {
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    border-radius: 5px;
+}
+.main-info-panel {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.text-notransform{text-transform:none !important}
+span.equipment-ranking-value-1 {
+    background: rgba(48,179,45,.3);
+    border-radius: 3px;
+    font-size: 11px;
+    padding: 0px 10px;
+    position: relative;
+    top: 0px;
+    border-color: rgba(48,179,45,1);
+}
+span.equipment-ranking-value-2 {
+    background: rgba(255,236,58,.3);
+    border-radius: 3px;
+    font-size: 11px;
+    padding: 0px 10px;
+    position: relative;
+    top: 0px;
+    border: rgba(255,236,58,1);
+}
+span.equipment-ranking-value-3 {
+    background: rgba(255,165,0,.3);
+    border-radius: 3px;
+    font-size: 11px;
+    padding: 0px 10px;
+    position: relative;
+    top: 0px;
+    border:rgba(255,165,0,.3);
+}
+span.equipment-ranking-value-4 {
+    background: rgba(240,62,62,.3);
+    border-radius: 3px;
+    font-size: 11px;
+    padding: 0px 10px;
+    position: relative;
+    top: 0px;
+    border: rgba(240,62,62,.3);
+}
+span.equipment-ranking-value-5 {
+    background: rgba(124,124,124,.3);
+    border-radius: 3px;
+    font-size: 11px;
+    padding: 0px 10px;
+    position: relative;
+    top: 0px;
+    border: rgba(124,124,124,.3);
+}
+
+.mb-40{
+    margin-bottom: 40px;
+}
+.mb-30{
+    margin-bottom: 30px;
+}
+.mb-20{
+    margin-bottom: 20px;
+}
+.mb-10{
+    margin-bottom: 10px;
+}
+.mt-10{
+    margin-top: 10px;
+}
+.mt-20{
+    margin-top: 20px;
+}
+.mt-30{
+    margin-top: 30px;
+}
+.mt-40{
+    margin-top: 40px;
+}
