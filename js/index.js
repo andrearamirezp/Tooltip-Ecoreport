@@ -31,8 +31,8 @@ new jBox("Modal", {
   overlay: false,
   title: "<b>Ranking equipos</b>",
   content:
-    "<p>Ranking de equipos ordenados de mayor a menor índice de criticidad (IC), este puede variar según la evaluación de los reportes asociados al equipo.</p>" +
-    "<table><tr><td><div class='circulo' style='background:#F57C00D9'></div></td><td>Índice de criticidad de 0 a 1.67</td></tr> <tr><td><div class='circulo' style='background:#F57C00D9'></div></td><td>Índice de criticidad de 1.68 a 3.33</td></tr> <tr><td><div class='circulo' style='background:#F44336'></div></td><td>Índice de criticidad de 3.34 a 5</td></tr> </table>",
+    "<p>Ranking de equipos ordenados de mayor a menor relevancia (R), esta varía según el índice de criticidad SOMA.</p>" +
+    "<table><tr><td><div class='circulo' style='background:#9CCC65'></div></td><td>Relevancia de 1 a 4</td></tr> <tr><td><div class='circulo' style='background:#FFEB3B'></div></td><td>Relevancia de 5 a 10</td></tr> <tr><td><div class='circulo' style='background:#F44336'></div></td><td>Relevancia de 12 a 36 </td></tr> </table>",
   addClass: "target",
 });
 
